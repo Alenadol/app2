@@ -27,8 +27,8 @@ def set_png_as_page_bg(png_file):
 set_png_as_page_bg('6.jpg')
 
 
-classifier_name=['Сatboost']
-option = st.sidebar.selectbox('Модель прогнозирования оттока клиентов', classifier_name)
+classifier_name=['GB']
+option = st.sidebar.selectbox('Предиктивная модель для депозитных сделок (ФЛ)', classifier_name)
 st.subheader(option)
 
 
@@ -45,7 +45,7 @@ def predict_churn(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfPro
 
 
 def main():
-    st.title("Прогноз оттока клиентов")
+    st.title("Предиктивная модель для депозитных сделок (ФЛ)")
     html_temp = """
     <div style="background-color:white ;padding:5px">
     <h2 style="color:black;text-align:center;">Заполни форму</h2>
