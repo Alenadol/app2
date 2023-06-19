@@ -54,7 +54,7 @@ def main():
     st.markdown(html_temp, unsafe_allow_html=True)
     st.sidebar.image('prior.png', width=300)
     st.sidebar.subheader("Итоговая работа в рамках курса Diving into Darkness of Data Science")
-    st.sidebar.text("Разработчик - Дубовцов А.А.")
+    st.sidebar.info("Креатив от Алёнушки")
 
     CreditScore = st.sidebar.slider('Скоринговый балл', 0, 400)
     Geography = st.selectbox('География/регион', ['Минск', 'Брест', 'Могилев'])
@@ -121,7 +121,7 @@ def main():
         st.error('Некорректный возраст клиента или длительность обслуживания в банке')
     
     else:
-        if st.button('Сделать прогноз'):
+        if st.sidebar.button('Сделать прогноз'):
               
             if Balance < 1000 and EstimatedSalary < 500 and IsActiveMember == 0 and NumOfProducts == 1:
                 st.success('Вероятность оттока составляет более 90%.')
