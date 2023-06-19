@@ -56,7 +56,7 @@ def main():
     st.sidebar.subheader("Итоговая работа в рамках курса Diving into Darkness of Data Science")
     st.sidebar.text("Разработчик - Дубовцов А.А.")
 
-    CreditScore = st.slider('Скоринговый балл', 0, 400)
+    CreditScore = st.sidebar.slider('Скоринговый балл', 0, 400)
     Geography = st.selectbox('География/регион', ['Минск', 'Брест', 'Могилев'])
     #Gender = st.selectbox('Пол',  ['1', '2'])
     Gen = st.selectbox('Пол',  ['Женский', 'Мужской'])
