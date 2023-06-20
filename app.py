@@ -33,7 +33,7 @@ st.subheader(option)
 
 
 
-model=pickle.load(open("model","rb"))
+model=pickle.load(open("model_saved","rb"))
 
 
 
