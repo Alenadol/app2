@@ -61,7 +61,7 @@ def main():
 
     age = st.sidebar.number_input('Возраст', min_value=16, max_value=100, step=1)
     #st.slider("Возраст", 10, 100)
-    number_previous_contact = st.number_input('Клиенту уже позвонили ... раз:', min_value=1, max_value=50, step = 1)
+    number_previous_contact = st.sidebar.number_input('Клиенту уже позвонили ... раз:', min_value=1, max_value=50, step = 1)
     
     house_loan = st.sidebar.selectbox('Ипотека', ['да', 'нет'])
     if house_loan == 'да':
