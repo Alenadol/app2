@@ -48,7 +48,7 @@ def main():
     st.title("Предиктивная модель для депозитных сделок (ФЛ)")
     html_temp = """
     <div style="background-color:white ;padding:5px">
-    <h2 style="color:black;text-align:center;">Вводные данные</h2>
+    <h2 style="color:black;text-align:center;"> депозиты позволяют безопасно хранить, накапливать и увеличивать сумму денежных средств. По окончании срока действия договора вкладчик получает вложенную сумму с процентами.</h2>
     </div>
     """
     st.markdown(html_temp, unsafe_allow_html=True)
