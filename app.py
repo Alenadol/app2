@@ -27,18 +27,18 @@ def set_png_as_page_bg(png_file):
 set_png_as_page_bg('8.png')
 
 
-classifier_name=['GB']
+classifier_name=['GradientBoosting']
 option = st.sidebar.selectbox('Предиктивная модель для депозитных сделок (ФЛ)', classifier_name)
 st.subheader(option)
 
 
 
-model=pickle.load(open("model_saved","rb"))
+model=pickle.load(open("model","rb"))
 
 
 
-def predict_churn(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary):
-    input = np.array([[CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary]])
+def predict_churn(days_passed, marital_status, age, house_loan, duration, number_previous_contact):
+    input = np.array([[days_passed, marital_status, age, house_loan, duration, number_previous_contact]])
     prediction = model.predict_proba(input)[:, 1] * 100
     return float(prediction)    
 
@@ -52,20 +52,14 @@ def main():
     </div>
     """
     st.markdown(html_temp, unsafe_allow_html=True)
-    st.sidebar.image('prior.png', width=300)
-    st.sidebar.subheader("Итоговая работа в рамках курса Diving into Darkness of Data Science")
-    st.sidebar.info("Креатив от Алёнушки")
+    st.sidebar.image('9.jpg', width=300)
+    st.sidebar.subheader("Учебный проект IT Academy/ w.2.0")
+    st.sidebar.info("Не спала до трех ночи Алёна Долбик")
 
-    CreditScore = st.sidebar.slider('Скоринговый балл', 0, 400)
-    Geography = st.selectbox('География/регион', ['Минск', 'Брест', 'Могилев'])
-    #Gender = st.selectbox('Пол',  ['1', '2'])
-    Gen = st.selectbox('Пол',  ['Женский', 'Мужской'])
-    if Gen == 'Женский':
-        Gender = 0
-    else:
-        Gender = 1
+    CreditScore = st.sidebar.slider('Последний раз клиенту звонили ... дней назад', 0, 365)
+  
 
-    Age = st.number_input('Возраст', min_value=18, max_value=100, step=1)
+    age = st.number_input('Возраст', min_value=16, max_value=100, step=1)
     #st.slider("Возраст", 10, 100)
     Tenure = st.number_input('Длительность обслуживания в банке:', min_value=1, max_value=35, step = 1)
     Bal = st.number_input('Баланс', min_value=0.00)
