@@ -56,7 +56,7 @@ def main():
     st.sidebar.subheader("Учебный проект IT Academy/ w.2.0")
     st.sidebar.info("Не спала до трех ночи Алёна Долбик")
 
-    CreditScore = st.sidebar.slider('Последний раз клиенту звонили ... дней назад', 0, 365)
+    days_passed = st.sidebar.slider('Последний раз клиенту звонили ... дней назад', 0, 365)
   
 
     age = st.number_input('Возраст', min_value=16, max_value=100, step=1)
