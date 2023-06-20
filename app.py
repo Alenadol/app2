@@ -37,8 +37,8 @@ model=pickle.load(open("model_saved","rb"))
 
 
 
-def predict_churn(days_passed, marital_status, age, house_loan, duration, number_previous_contact):
-    input = np.array([[days_passed, marital_status, age, house_loan, duration, number_previous_contact]])
+def predict_churn(days_passed, age, house_loan, duration, number_previous_contact, loan):
+    input = np.array([[days_passed, age, house_loan, duration, number_previous_contact, loan]])
     prediction = model.predict_proba(input)[:, 1] * 100
     return float(prediction)    
 
@@ -48,7 +48,7 @@ def main():
     st.title("Предиктивная модель для депозитных сделок (ФЛ)")
     html_temp = """
     <div style="background-color:white ;padding:5px">
-    <h2 style="color:black;text-align:center;">Заполни форму</h2>
+    <h2 style="color:black;text-align:center;">Вводные данные</h2>
     </div>
     """
     st.markdown(html_temp, unsafe_allow_html=True)
@@ -59,48 +59,34 @@ def main():
     days_passed = st.sidebar.slider('Последний раз клиенту звонили ... дней назад', 0, 365)
   
 
-    age = st.number_input('Возраст', min_value=16, max_value=100, step=1)
+    age = st.sidebar.number_input('Возраст', min_value=16, max_value=100, step=1)
     #st.slider("Возраст", 10, 100)
-    Tenure = st.number_input('Длительность обслуживания в банке:', min_value=1, max_value=35, step = 1)
-    Bal = st.number_input('Баланс', min_value=0.00)
-    if Bal < 500:
-        Balance = 500
-    elif Bal >= 500 and Bal < 6000:
-        Balance = Bal
+    number_previous_contact = st.number_input('Клиенту уже позвонили ... раз:', min_value=1, max_value=50, step = 1)
+    
+    house_loan = st.sidebar.selectbox('Ипотека', ['да', 'нет'])
+    if house_loan == 'да':
+        house_loan = 1
     else:
-        Balance = 6000
-    Num = st.selectbox('Количество продуктов', ['1', '2 и более'])
-    if Num == '1':
-        NumOfProducts = 1
+        house_loan = 0
+    
+    loan = st.sidebar.selectbox('Потребительский кредит', ['да', 'нет'])
+    if loan == 'да':
+        loan = 1
     else:
-        NumOfProducts = 2
-    HasCr = st.selectbox("Есть кредитная БПК ?", ['Нет', 'Да'])
-    if HasCr == 'Нет':
-        HasCrCard = 0
-    else:
-        HasCrCard = 1
-    IsActive = st.selectbox("Активный клиент ?", ['Нет', 'Да'])
-    if IsActive == 'Нет':
-        IsActiveMember = 0
-    else:
-        IsActiveMember = 1
-    Salary = st.number_input('Зарплата', min_value=0.00)
-    if Salary < 300:
-        EstimatedSalary = 300
-    elif Salary >= 300 and Salary < 6000:
-        EstimatedSalary = Salary
-    else:
-        EstimatedSalary = 6000
+        loan = 0
+
+    duration = st.sidebar.slider('Длительность звонка, min', 0, 60)
+   
 
     churn_html = """  
               <div style="background-color:#f44336;padding:20px >
-               <h2 style="color:red;text-align:center;"> Клиент уходит. <br>Добавить клиента в CRM кампанию: потенциально потерянные клиенты.</h2>
+               <h2 style="color:red;text-align:center;"> Клиенту с большой долей вероятности будут интересны вклады => высокаяя доля вероятности заключения депозита . <br>Добавить клиента в CRM кампанию.</h2>
                </div>
             """
     
     no_churn_html = """  
               <div style="background-color:#94be8d;padding:20px >
-               <h2 style="color:green ;text-align:center;"> Клиент остаётся в банке.</h2>
+               <h2 style="color:green ;text-align:center;"> Клиенту с большой долей вероятности будут не интересны вклады.</h2>
                </div>
             """
     
@@ -111,29 +97,21 @@ def main():
             """
 
     
-    if Age - Tenure < 17:
-        st.error('Некорректный возраст клиента или длительность обслуживания в банке')
+    if age < 16:
+        st.error('Некорректный возраст клиента')
     
     else:
-        if st.sidebar.button('Сделать прогноз'):
+        if st.sidebar.button('Прогноз'):
               
-            if Balance < 1000 and EstimatedSalary < 500 and IsActiveMember == 0 and NumOfProducts == 1:
-                st.success('Вероятность оттока составляет более 90%.')
+            if age < 40 and number_previous_contact < 5 and house_loan == 0 and NumOfProducts == 1:
+                st.success('Вероятность заключения депозитного договора не менее 90%.')
                 st.markdown(churn_html, unsafe_allow_html= True)
 
-            elif Balance > 2000 and EstimatedSalary > 2000 and CreditScore > 250 and predict_churn(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary)  > 40:
-                st.success('Вероятность оттока составляет менее 40 %.')
-                st.markdown(no_churn_html, unsafe_allow_html= True)
-                
+                        
             else:
-                output = predict_churn(CreditScore, Geography, Gender, Age, Tenure, Balance, NumOfProducts, HasCrCard, IsActiveMember, EstimatedSalary)
-                st.success('Вероятность оттока составляет {:.2f} %'.format(output))
-                if output >= 85:
-                        st.markdown(churn_html, unsafe_allow_html= True)
-                elif output >= 40:
-                    st.markdown(mb_churn_html, unsafe_allow_html= True)
-                else:
-                    st.markdown(no_churn_html, unsafe_allow_html= True)
+                output = predict_churn(days_passed, age, house_loan, duration, number_previous_contact, loan)
+                st.success('Вероятность заключения депозитного договора низкая')
+              st.markdown(no_churn_html, unsafe_allow_html= True)
                     st.balloons()
 
 
