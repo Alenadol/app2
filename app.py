@@ -112,7 +112,7 @@ def main():
                 output = predict_churn(days_passed, age, house_loan, duration, number_previous_contact, loan)
                 st.success('Вероятность заключения депозитного договора низкая')
     #st.markdown(no_churn_html, unsafe_allow_html= True)
-                    st.balloons()
+                    #st.balloons()
 
 
 if __name__=='__main__':
